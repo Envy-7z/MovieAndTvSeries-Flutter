@@ -117,14 +117,14 @@ class DetailContent extends StatelessWidget {
                                           listen: false)
                                       .removeFromWatchlist(tvDetail);
                                 }
-                                final message =
-                                    Provider.of<TvDetailNotifier>(context,
+                                final message = Provider.of<TvDetailNotifier>(
+                                        context,
                                         listen: false)
-                                        .watchlistMessage;
+                                    .watchlistMessage;
 
                                 if (message ==
-                                    TvDetailNotifier
-                                        .watchlistAddSuccessMessage ||
+                                        TvDetailNotifier
+                                            .watchlistAddSuccessMessage ||
                                     message ==
                                         TvDetailNotifier
                                             .watchlistRemoveSuccessMessage) {
@@ -152,9 +152,6 @@ class DetailContent extends StatelessWidget {
                             ),
                             Text(
                               _showGenres(tvDetail.genres),
-                            ),
-                            Text(
-                              _formattedDuration(tvDetail.episodeRunTime),
                             ),
                             Row(
                               children: [

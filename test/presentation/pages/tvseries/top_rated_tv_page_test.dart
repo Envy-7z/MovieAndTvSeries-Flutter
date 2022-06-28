@@ -19,7 +19,7 @@ void main() {
   });
 
   Widget _makeTestableWidget(Widget body) {
-    return ChangeNotifierProvider<MockTopRatedTvNotifier>.value(
+    return ChangeNotifierProvider<TopRatedTvNotifier>.value(
       value: mockNotifier,
       child: MaterialApp(
         home: body,
@@ -40,6 +40,18 @@ void main() {
     expect(progressFinder, findsOneWidget);
   });
 
+  testWidgets('Page should display text with message when Error',
+      (WidgetTester tester) async {
+    when(mockNotifier.state).thenReturn(RequestState.Error);
+    when(mockNotifier.message).thenReturn('Error message');
+
+    final textFinder = find.byKey(Key('error_message'));
+
+    await tester.pumpWidget(_makeTestableWidget(TopRatedTvPage()));
+
+    expect(textFinder, findsOneWidget);
+  });
+
   testWidgets('Page should display when data is loaded',
       (WidgetTester tester) async {
     when(mockNotifier.state).thenReturn(RequestState.Loaded);
@@ -50,17 +62,5 @@ void main() {
     await tester.pumpWidget(_makeTestableWidget(TopRatedTvPage()));
 
     expect(listViewFinder, findsOneWidget);
-  });
-
-  testWidgets('Page should display text with message when Error',
-      (WidgetTester tester) async {
-    when(mockNotifier.state).thenReturn(RequestState.Error);
-    when(mockNotifier.message).thenReturn('Error message');
-
-    final textFinder = find.byKey(Key('Failed to load toprated tv'));
-
-    await tester.pumpWidget(_makeTestableWidget(TopRatedTvPage()));
-
-    expect(textFinder, findsOneWidget);
   });
 }

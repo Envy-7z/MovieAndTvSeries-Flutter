@@ -16,10 +16,9 @@ void main() {
     posterPath: "/path.jpg",
     voteAverage: 1.0,
     voteCount: 1,
-    originalLanguage: 'en',
-    originCountry:  ["US"],
     originalName: 'Original Name',
     name: 'Name',
+    firstAirDate: null,
   );
   final tTvShowResponseModel =
       TvResponse(TvList: <TvSeriesModel>[tTvShowModel]);
@@ -46,18 +45,16 @@ void main() {
         "results": [
           {
             "backdrop_path": "/path.jpg",
-            "first_air_date": "2021-10-12",
             "genre_ids": [1, 2, 3, 4],
             "id": 90462,
             "name": "Name",
-            "origin_country": ["US"],
-            "original_language": "en",
             "original_name": "Original Name",
             "overview": "Overview",
             "popularity": 1.0,
             "poster_path": "/path.jpg",
-            "vote_average": 1,
-            "vote_count": 1
+            "vote_average": 1.0,
+            "vote_count": 1,
+            'first_air_date': null
           }
         ],
       };

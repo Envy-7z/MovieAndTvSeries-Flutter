@@ -12,10 +12,9 @@ void main() {
       posterPath: 'posterPath',
       voteAverage: 1,
       voteCount: 1,
-      originCountry: [],
       name: 'name',
-      originalLanguage: 'originalLanguage',
-      originalName: 'originalName');
+      originalName: 'originalName',
+      firstAirDate: '');
 
   final tTvShow = TvShow(
       backdropPath: "backdropPath",

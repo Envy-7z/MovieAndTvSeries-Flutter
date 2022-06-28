@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:ditonton/common/exception.dart';
 import 'package:ditonton/data/datasources/tv_remote_data_source.dart';
+import 'package:ditonton/data/models/tv_detail_model.dart';
 import 'package:ditonton/data/models/tv_response.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -12,7 +13,7 @@ import '../../helpers/test_helper_tv.mocks.dart';
 import '../../json_reader.dart';
 
 void main() {
-  const API_KEY = 'api_key=e54d3aed27284a12d12c0a33ed79f7d9';
+  const API_KEY = 'api_key=2174d146bb9c0eab47529b2e77d6b526';
   const BASE_URL = 'https://api.themoviedb.org/3';
 
   late TvRemoteDataSourceImpl dataSource;
@@ -23,12 +24,12 @@ void main() {
     dataSource = TvRemoteDataSourceImpl(client: mockHttpClient);
   });
 
-  group('get On Now Playing', () {
-    final tTvShowList = TvResponse.fromJson(
+  group('get Now Playing TV', () {
+    final tTVList = TvResponse.fromJson(
             json.decode(readJson('dummy_data/tvseries/tv_now_playing.json')))
         .TvList;
 
-    test('should return list of TvSeries Model when the response code is 200',
+    test('should return list of TV Model when the response code is 200',
         () async {
       // arrange
       when(mockHttpClient.get(Uri.parse('$BASE_URL/tv/on_the_air?$API_KEY')))
@@ -37,7 +38,7 @@ void main() {
       // act
       final result = await dataSource.getNowPlayingTv();
       // assert
-      expect(result, equals(tTvShowList));
+      expect(result, equals(tTVList));
     });
 
     test(
@@ -53,13 +54,12 @@ void main() {
     });
   });
 
-  group('get Popular TvSeries', () {
-    final tTvShowList = TvResponse.fromJson(
+  group('get Popular TV', () {
+    final tTVList = TvResponse.fromJson(
             json.decode(readJson('dummy_data/tvseries/tv_popular.json')))
         .TvList;
 
-    test('should return list of TvSeries when response is success (200)',
-        () async {
+    test('should return list of tvs when response is success (200)', () async {
       // arrange
       when(mockHttpClient.get(Uri.parse('$BASE_URL/tv/popular?$API_KEY')))
           .thenAnswer((_) async => http.Response(
@@ -67,7 +67,7 @@ void main() {
       // act
       final result = await dataSource.getPopularTv();
       // assert
-      expect(result, tTvShowList);
+      expect(result, tTVList);
     });
 
     test(
@@ -83,12 +83,12 @@ void main() {
     });
   });
 
-  group('get Top Rated TvSeries', () {
-    final tTvShowList = TvResponse.fromJson(
+  group('get Top Rated TV', () {
+    final tTVList = TvResponse.fromJson(
             json.decode(readJson('dummy_data/tvseries/tv_top_rated.json')))
         .TvList;
 
-    test('should return list of TvSeries when response code is 200 ', () async {
+    test('should return list of tvs when response code is 200 ', () async {
       // arrange
       when(mockHttpClient.get(Uri.parse('$BASE_URL/tv/top_rated?$API_KEY')))
           .thenAnswer((_) async => http.Response(
@@ -96,7 +96,7 @@ void main() {
       // act
       final result = await dataSource.getTopRatedTv();
       // assert
-      expect(result, tTvShowList);
+      expect(result, tTVList);
     });
 
     test('should throw ServerException when response code is other than 200',
@@ -111,12 +111,12 @@ void main() {
     });
   });
 
-  group('get TvSeries detail', () {
+  group('get tv detail', () {
     final tId = 1;
-    final tTvShowDetail = TvResponse.fromJson(
+    final tTVDetail = TvDetailResponse.fromJson(
         json.decode(readJson('dummy_data/tvseries/tv_detail.json')));
 
-    test('should return TvSeries detail when the response code is 200', () async {
+    test('should return tv detail when the response code is 200', () async {
       // arrange
       when(mockHttpClient.get(Uri.parse('$BASE_URL/tv/$tId?$API_KEY')))
           .thenAnswer((_) async => http.Response(
@@ -124,7 +124,7 @@ void main() {
       // act
       final result = await dataSource.getTvDetail(tId);
       // assert
-      expect(result, equals(tTvShowDetail));
+      expect(result, equals(tTVDetail));
     });
 
     test('should throw Server Exception when the response code is 404 or other',
@@ -139,13 +139,13 @@ void main() {
     });
   });
 
-  group('get TvSeries recommendations', () {
-    final tTvShowList = TvResponse.fromJson(json
+  group('get tv recommendations', () {
+    final tTVList = TvResponse.fromJson(json
             .decode(readJson('dummy_data/tvseries/tv_recommendations.json')))
         .TvList;
     final tId = 1;
 
-    test('should return list of TvSeries Model when the response code is 200',
+    test('should return list of TV Model when the response code is 200',
         () async {
       // arrange
       when(mockHttpClient
@@ -155,7 +155,7 @@ void main() {
       // act
       final result = await dataSource.getTvRecommendations(tId);
       // assert
-      expect(result, equals(tTvShowList));
+      expect(result, equals(tTVList));
     });
 
     test('should throw Server Exception when the response code is 404 or other',
@@ -177,7 +177,7 @@ void main() {
         .TvList;
     final tQuery = 'Chucky';
 
-    test('should return list of TvSeries when response code is 200', () async {
+    test('should return list of TvShows when response code is 200', () async {
       // arrange
       when(mockHttpClient
               .get(Uri.parse('$BASE_URL/search/tv?$API_KEY&query=$tQuery')))

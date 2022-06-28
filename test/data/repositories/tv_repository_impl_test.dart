@@ -32,30 +32,29 @@ void main() {
     backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
     genreIds: [14, 28],
     id: 557,
+    originalName: 'Spider-Man',
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
     popularity: 60.441,
     posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
+    firstAirDate: '2002-05-01',
+    name: 'Spider-Man',
     voteAverage: 7.2,
     voteCount: 13507,
-    originCountry: [],
-    originalName: '',
-    originalLanguage: '',
-    name: '',
   );
 
   final tTvShow = TvShow(
     backdropPath: '/muth4OYamXf41G2evdrLEg8d3om.jpg',
     genreIds: [14, 28],
     id: 557,
+    originalName: 'Spider-Man',
     overview:
         'After being bitten by a genetically altered spider, nerdy high school student Peter Parker is endowed with amazing powers to become the Amazing superhero known as Spider-Man.',
     popularity: 60.441,
     posterPath: '/rweIrveL43TaxUN0akQEaAXL6x0.jpg',
+    name: 'Spider-Man',
     voteAverage: 7.2,
     voteCount: 13507,
-    originalName: '',
-    name: '',
   );
 
   final tTvShowModelList = <TvSeriesModel>[tTvShowModel];
@@ -184,22 +183,17 @@ void main() {
   group('Get TvSeries Detail', () {
     final tId = 1;
     final tTvShowResponse = TvDetailResponse(
-      backdropPath: 'backdropPath',
-      genres: [GenreModel(id: 1, name: 'Action')],
-      id: 1,
-      overview: 'overview',
-      posterPath: 'posterPath',
-      voteAverage: 1,
-      voteCount: 1,
-      originalName: 'originalName',
-      name: 'name',
-      tagline: '#',
-      popularity: 0,
-      originalLanguage: '',
-      episodeRunTime: [1, 2, 3],
-      homepage: 'detail',
-      status: '2',
-    );
+        backdropPath: 'backdropPath',
+        genres: [GenreModel(id: 1, name: 'Action')],
+        id: 1,
+        overview: 'overview',
+        posterPath: 'posterPath',
+        voteAverage: 1,
+        voteCount: 1,
+        originalName: 'originalName',
+        numberOfSeasons: 1,
+        name: 'name',
+        firstAirDate: 'firstAirDate');
 
     test(
         'should return TvSeries data when the call to remote data source is successful',

@@ -27,7 +27,7 @@ class TvShow extends Equatable {
 
   // DateTime? firstAirDate;
   List<int>? genreIds;
-  int id;
+  int? id;
   String? name;
   List<String>? originCountry;
   String? originalLanguage;

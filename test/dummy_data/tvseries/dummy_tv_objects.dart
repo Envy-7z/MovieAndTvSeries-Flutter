@@ -1,9 +1,7 @@
-
 import 'package:ditonton/data/models/tv_table.dart';
 import 'package:ditonton/domain/entities/genre.dart';
 import 'package:ditonton/domain/entities/tv.dart';
 import 'package:ditonton/domain/entities/tv_detail.dart';
-
 
 final testTv = TvShow(
     backdropPath: "/xAKMj134XHQVNHLC6rWsccLMenG.jpg",
@@ -22,6 +20,7 @@ final testTvList = [testTv];
 
 final testTvDetail = TvDetail(
     backdropPath: "backdropPath",
+    firstAirDate: "firstAirDate",
     genres: [Genre(id: 1, name: "Action")],
     id: 1,
     name: "name",
@@ -29,7 +28,8 @@ final testTvDetail = TvDetail(
     overview: "overview",
     posterPath: "posterPath",
     voteAverage: 1,
-    voteCount: 1, episodeRunTime: [1,2,3]);
+    voteCount: 1,
+    numberOfSeasons: 1);
 
 final testWatchlistTv = TvShow.watchlist(
     id: 1, overview: "overview", posterPath: "posterPath", name: "name");
