@@ -1,0 +1,30 @@
+{
+  "page": 1,
+  "results": [
+    {
+      "backdrop_path": "/xAKMj134XHQVNHLC6rWsccLMenG.jpg",
+      "genre_ids": [
+        10765,
+        35,
+        80
+      ],
+      "id": 90462,
+      "name": "Chucky",
+      "origin_country": [
+        "US"
+      ],
+      "original_language": "en",
+      "original_name": "Chucky",
+      "overview": "After a vintage Chucky doll turns up at a suburban yard sale, an idyllic American town is thrown into chaos as a series of horrifying murders begin to expose the town’s hypocrisies and secrets. Meanwhile, the arrival of enemies — and allies — from Chucky’s past threatens to expose the truth behind the killings, as well as the demon doll’s untold origins.",
+      "popularity": 6858.77,
+      "poster_path": "/iF8ai2QLNiHV4anwY1TuSGZXqfN.jpg",
+      "vote_average": 8,
+      "vote_count": 1418,
+      "episodeRunTime": [
+        1,2,3
+      ]
+    }
+  ],
+  "total_pages": 1,
+  "total_results": 1
+}

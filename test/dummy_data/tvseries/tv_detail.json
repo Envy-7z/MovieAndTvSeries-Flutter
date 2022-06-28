@@ -1,0 +1,18 @@
+{
+  "backdrop_path": "/path.jpg",
+  "genres": [
+    {
+      "id": 1,
+      "name": "Action"
+    }
+  ],
+  "id": 1,
+  "name": "Name",
+  "original_name": "Original Name",
+  "overview": "Overview",
+  "poster_path": "/path.jpg",
+  "vote_average": 1.0,
+  "vote_count": 1,
+  "number_of_seasons": 1,
+  "episodeRunTime": [1,2,3]
+}
