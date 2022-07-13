@@ -8,10 +8,13 @@ import 'package:ditonton/presentation/pages/tvseries/top_rated_tv_page.dart';
 import 'package:ditonton/presentation/pages/tvseries/tv_detail_page.dart';
 import 'package:ditonton/presentation/pages/tvseries/watchlist_tv_page.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/state_enum.dart';
-import '../../provider/tv_series/tv_list_notifier.dart';
+import '../../bloc/tv_series/tv_event.dart';
+import '../../bloc/tv_series/tv_list.dart';
+import '../../bloc/tv_series/tv_popular.dart';
+import '../../bloc/tv_series/tv_state.dart';
+import '../../bloc/tv_series/tv_top_rate.dart';
 import '../movies/about_page.dart';
 import '../movies/watchlist_movies_page.dart';
 
@@ -26,10 +29,9 @@ class _HomeTvPageState extends State<HomeTvPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() => Provider.of<TvListNotifier>(context, listen: false)
-      ..fetchOnNowPlayingTv()
-      ..fetchPopularTvShows()
-      ..fetchTopRatedTvShows());
+    context.read<ListTv>().add(OnListTv());
+    context.read<PopularTv>().add(OnListTv());
+    context.read<TopRatedTv>().add(OnListTv());
   }
 
   @override
@@ -110,52 +112,80 @@ class _HomeTvPageState extends State<HomeTvPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, NowPlayingTvPage.ROUTE_NAME),
               ),
-              Consumer<TvListNotifier>(builder: (context, data, child) {
-                final state = data.onNowPlayingTvState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return TvList(data.onNowPlayingTv);
-                } else {
-                  return Text('Failed to load tv series');
-                }
-              }),
-              _buildSubHeading(
-                title: 'Popular',
-                onTap: () =>
-                    Navigator.pushNamed(context, PopularTvPage.ROUTE_NAME),
+              BlocBuilder<ListTv, StateTv>(
+                builder: (context, state) {
+                  if (state is TvLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is TvHasData) {
+                    final tv = state.result;
+                    return TvList(tv);
+                  } else if (state is TvError) {
+                    final tv = state.message;
+                    return (Center(
+                      child: Text(tv),
+                    ));
+                  } else {
+                    return (Center(
+                      child: Text("Failed to load tv series"),
+                    ));
+                  }
+                },
               ),
-              Consumer<TvListNotifier>(builder: (context, data, child) {
-                final state = data.popularTvShowsState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return TvList(data.popularTvShows);
-                } else {
-                  return Text('Failed to load tv series');
-                }
-              }),
+              _buildSubHeading(
+                  title: 'Popular',
+                  onTap: () => {
+                        Navigator.pushNamed(context, PopularTvPage.ROUTE_NAME),
+                        //   FirebaseCrashlytics.instance.crash() -> just for test
+                      }),
+              BlocBuilder<PopularTv, StateTv>(
+                builder: (context, state) {
+                  if (state is TvLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is TvHasData) {
+                    final tv = state.result;
+                    return TvList(tv);
+                  } else if (state is TvError) {
+                    final tv = state.message;
+                    return (Center(
+                      child: Text(tv),
+                    ));
+                  } else {
+                    return (Center(
+                      child: Text("Failed to load tv series"),
+                    ));
+                  }
+                },
+              ),
               _buildSubHeading(
                 title: 'Top Rated',
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedTvPage.ROUTE_NAME),
               ),
-              Consumer<TvListNotifier>(builder: (context, data, child) {
-                final state = data.topRatedTvShowsState;
-                if (state == RequestState.Loading) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (state == RequestState.Loaded) {
-                  return TvList(data.topRatedTvShows);
-                } else {
-                  return Text('Failed to load tv series');
-                }
-              }),
+              BlocBuilder<TopRatedTv, StateTv>(
+                builder: (context, state) {
+                  if (state is TvLoading) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (state is TvHasData) {
+                    final movie = state.result;
+                    return TvList(movie);
+                  } else if (state is TvError) {
+                    final movie = state.message;
+                    return (Center(
+                      child: Text(movie),
+                    ));
+                  } else {
+                    return (Center(
+                      child: Text("Failed to load top rated tv"),
+                    ));
+                  }
+                },
+              ),
             ],
           ),
         ),

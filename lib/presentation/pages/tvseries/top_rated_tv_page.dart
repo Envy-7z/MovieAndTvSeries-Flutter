@@ -1,9 +1,10 @@
-import 'package:ditonton/presentation/provider/tv_series/top_rated_tv_notifier.dart';
 import 'package:ditonton/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../common/state_enum.dart';
+import '../../bloc/tv_series/tv_event.dart';
+import '../../bloc/tv_series/tv_state.dart';
+import '../../bloc/tv_series/tv_top_rate.dart';
 
 class TopRatedTvPage extends StatefulWidget {
   static const ROUTE_NAME = 'top-rated-tv';
@@ -16,9 +17,7 @@ class _TopRatedTvPageState extends State<TopRatedTvPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<TopRatedTvNotifier>(context, listen: false)
-            .fetchTopRatedTvShows());
+    context.read<TopRatedTv>().add(OnListTv());
   }
 
   @override
@@ -29,24 +28,24 @@ class _TopRatedTvPageState extends State<TopRatedTvPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<TopRatedTvNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
+        child: BlocBuilder<TopRatedTv, StateTv>(
+          builder: (context, state) {
+            if (state is TvLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.Loaded) {
+            } else if (state is TvHasData) {
+              final movies = state.result;
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tv = data.tvShows[index];
-                  return TvCard(tv);
+                  final movie = movies[index];
+                  return TvCard(movie);
                 },
-                itemCount: data.tvShows.length,
+                itemCount: movies.length,
               );
             } else {
               return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+                child: Text('Failed to load Top Rated Tv'),
               );
             }
           },

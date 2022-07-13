@@ -1,9 +1,12 @@
-import 'package:ditonton/presentation/provider/tv_series/watchlist_tv_notifier.dart';
 import 'package:ditonton/presentation/widgets/tv_card_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 
-import '../../../common/state_enum.dart';
+import '../../../common/utils.dart';
+import '../../bloc/tv_series/tv_watchlist_bloc.dart';
+import '../../bloc/tv_series/tv_watchlist_event.dart';
+import '../../bloc/tv_series/tv_watchlist_state.dart';
 
 class WatchlistTvPage extends StatefulWidget {
   static const ROUTE_NAME = '/watchlist_Tv';
@@ -16,9 +19,17 @@ class _WatchlistTvPageState extends State<WatchlistTvPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<WatchlistTvNotifier>(context, listen: false)
-            .fetchWatchlistTvShows());
+    context.read<WatchlistBlocTv>().add(WatchlistTv());
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
+  }
+
+  void didPopNext() {
+    context.read<WatchlistBlocTv>().add(WatchlistTv());
   }
 
   @override
@@ -29,29 +40,35 @@ class _WatchlistTvPageState extends State<WatchlistTvPage> with RouteAware {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<WatchlistTvNotifier>(
-          builder: (context, data, child) {
-            if (data.watchlistState == RequestState.Loading) {
+        child: BlocBuilder<WatchlistBlocTv, WatchlistStateTv>(
+          builder: (context, state) {
+            if (state is WatchlistLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.watchlistState == RequestState.Loaded) {
+            } else if (state is WatchlistHasData) {
+              final result = state.result;
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final tvShow = data.watchlistTvShows[index];
-                  return TvCard(tvShow);
+                  final tv = result[index];
+                  return TvCard(tv);
                 },
-                itemCount: data.watchlistTvShows.length,
+                itemCount: result.length,
               );
             } else {
               return Center(
-                key: Key('Failed to load watchlist tv'),
-                child: Text(data.message),
+                child: Text("Failed load watchlist Tv series"),
               );
             }
           },
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 }
